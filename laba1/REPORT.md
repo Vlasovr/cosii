@@ -32,8 +32,8 @@
 
 ## Артефакты
 Скрипт `python3 -m laba1.main` формирует в `laba1/output`:
-- `periodic_signal_1.wav`, `periodic_signal_2.wav`
-- `signals_after_convolution.wav`, `signals_after_correlation.wav`
+- `периодический_сигнал_1.wav`, `периодический_сигнал_2.wav`
+- `сигнал_после_свертки.wav`, `сигнал_после_корреляции.wav`
 - графики во временной области и спектры
-- `algorithm_efficiency.png`
-- `summary.txt` с численными ошибками и временем выполнения.
+- `сравнение_эффективности_алгоритмов.png`
+- `сводка_результатов.txt` с численными ошибками и временем выполнения.

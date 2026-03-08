@@ -43,16 +43,16 @@ def run() -> None:
 
     signal_x, signal_y = generate_periodic_signals(SAMPLE_RATE, DURATION_SEC)
 
-    save_wav_mono_16(OUTPUT / "periodic_signal_1.wav", SAMPLE_RATE, signal_x)
-    save_wav_mono_16(OUTPUT / "periodic_signal_2.wav", SAMPLE_RATE, signal_y)
+    save_wav_mono_16(OUTPUT / "периодический_сигнал_1.wav", SAMPLE_RATE, signal_x)
+    save_wav_mono_16(OUTPUT / "периодический_сигнал_2.wav", SAMPLE_RATE, signal_y)
 
     conv_manual = convolution_full(signal_x, signal_y)
     corr_manual = correlation_full(signal_x, signal_y)
     conv_numpy = convolution_full_numpy(signal_x, signal_y)
     corr_numpy = correlation_full_numpy(signal_x, signal_y)
 
-    save_wav_mono_16(OUTPUT / "signals_after_convolution.wav", SAMPLE_RATE, conv_manual)
-    save_wav_mono_16(OUTPUT / "signals_after_correlation.wav", SAMPLE_RATE, corr_manual)
+    save_wav_mono_16(OUTPUT / "сигнал_после_свертки.wav", SAMPLE_RATE, conv_manual)
+    save_wav_mono_16(OUTPUT / "сигнал_после_корреляции.wav", SAMPLE_RATE, corr_manual)
 
     conv_from_fft = convolution_via_fft_dif(signal_x, signal_y)
     corr_from_fft = correlation_via_fft_dif(signal_x, signal_y)
@@ -77,14 +77,14 @@ def run() -> None:
     y_numpy_ifft = ifft_numpy(y_numpy_fft)
     conv_numpy_ifft = ifft_numpy(conv_numpy_fft)
 
-    plot_time_domain(signal_x, SAMPLE_RATE, OUTPUT / "signal_x_time.png", "Сигнал X во временной области")
-    plot_time_domain(signal_y, SAMPLE_RATE, OUTPUT / "signal_y_time.png", "Сигнал Y во временной области")
-    plot_time_domain(conv_manual, SAMPLE_RATE, OUTPUT / "signal_conv_time.png", "Результат свертки во временной области")
-    plot_time_domain(corr_manual, SAMPLE_RATE, OUTPUT / "signal_corr_time.png", "Результат корреляции во временной области")
+    plot_time_domain(signal_x, SAMPLE_RATE, OUTPUT / "сигнал_x_временная_область.png", "Сигнал X во временной области")
+    plot_time_domain(signal_y, SAMPLE_RATE, OUTPUT / "сигнал_y_временная_область.png", "Сигнал Y во временной области")
+    plot_time_domain(conv_manual, SAMPLE_RATE, OUTPUT / "результат_свертки_временная_область.png", "Результат свертки во временной области")
+    plot_time_domain(corr_manual, SAMPLE_RATE, OUTPUT / "результат_корреляции_временная_область.png", "Результат корреляции во временной области")
 
-    plot_amplitude_phase_spectrum(signal_x, SAMPLE_RATE, _manual_fft, OUTPUT / "signal_x_spectrum.png", "Сигнал X")
-    plot_amplitude_phase_spectrum(signal_y, SAMPLE_RATE, _manual_fft, OUTPUT / "signal_y_spectrum.png", "Сигнал Y")
-    plot_amplitude_phase_spectrum(conv_manual, SAMPLE_RATE, _manual_fft, OUTPUT / "signal_conv_spectrum.png", "Результат свертки")
+    plot_amplitude_phase_spectrum(signal_x, SAMPLE_RATE, _manual_fft, OUTPUT / "сигнал_x_спектр.png", "Сигнал X")
+    plot_amplitude_phase_spectrum(signal_y, SAMPLE_RATE, _manual_fft, OUTPUT / "сигнал_y_спектр.png", "Сигнал Y")
+    plot_amplitude_phase_spectrum(conv_manual, SAMPLE_RATE, _manual_fft, OUTPUT / "результат_свертки_спектр.png", "Результат свертки")
 
     sizes = [256, 512, 1024, 2048]
     sizes, direct_conv, fft_conv = benchmark_pair(
@@ -107,7 +107,7 @@ def run() -> None:
         fft_conv,
         direct_corr,
         fft_corr,
-        OUTPUT / "algorithm_efficiency.png",
+        OUTPUT / "сравнение_эффективности_алгоритмов.png",
     )
 
     report_lines = [
@@ -140,7 +140,7 @@ def run() -> None:
             f"корреляция_напрямую={direct_corr[index]:.6f}, корреляция_БПФ={fft_corr[index]:.6f}"
         )
 
-    (OUTPUT / "summary.txt").write_text("\n".join(report_lines), encoding="utf-8")
+    (OUTPUT / "сводка_результатов.txt").write_text("\n".join(report_lines), encoding="utf-8")
 
     print("Лабораторная работа 1 выполнена.")
     print(f"Результаты сохранены в: {OUTPUT}")

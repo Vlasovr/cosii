@@ -57,11 +57,11 @@ def run() -> None:
     y_fir = apply_fir(distorted, h_notch)
     y_iir = apply_one_pole_lpf(distorted, alpha)
 
-    save_wav_mono_16(OUTPUT / "clean_signal.wav", SAMPLE_RATE, clean)
-    save_wav_mono_16(OUTPUT / "distorted_signal.wav", SAMPLE_RATE, distorted)
-    save_wav_mono_16(OUTPUT / "homogeneous_output.wav", SAMPLE_RATE, y_homogeneous)
-    save_wav_mono_16(OUTPUT / "fir_rect_notch_output.wav", SAMPLE_RATE, y_fir)
-    save_wav_mono_16(OUTPUT / "iir_one_pole_lpf_output.wav", SAMPLE_RATE, y_iir)
+    save_wav_mono_16(OUTPUT / "чистый_сигнал.wav", SAMPLE_RATE, clean)
+    save_wav_mono_16(OUTPUT / "искаженный_сигнал.wav", SAMPLE_RATE, distorted)
+    save_wav_mono_16(OUTPUT / "выход_однородный_фильтр.wav", SAMPLE_RATE, y_homogeneous)
+    save_wav_mono_16(OUTPUT / "выход_ких_прямоугольное_окно.wav", SAMPLE_RATE, y_fir)
+    save_wav_mono_16(OUTPUT / "выход_бих_однополюсный_нч.wav", SAMPLE_RATE, y_iir)
 
     homogeneous_fr = fir_frequency_response(h_homogeneous, SAMPLE_RATE)
     fir_fr = fir_frequency_response(h_notch, SAMPLE_RATE)
@@ -71,7 +71,7 @@ def run() -> None:
         homogeneous_fr=homogeneous_fr,
         fir_fr=fir_fr,
         iir_fr=iir_fr,
-        path=OUTPUT / "filter_responses.png",
+        path=OUTPUT / "ачх_фильтров.png",
     )
     plot_time_comparison(
         clean=clean,
@@ -80,7 +80,7 @@ def run() -> None:
         fir=y_fir,
         iir=y_iir,
         sample_rate=SAMPLE_RATE,
-        path=OUTPUT / "signals_time_comparison.png",
+        path=OUTPUT / "сравнение_сигналов_во_времени.png",
     )
 
     lines = [
@@ -103,7 +103,7 @@ def run() -> None:
         f"alpha = exp(-2*pi*fc/fs) = {alpha:.8f}",
         "Разностное уравнение: y[n] = (1-alpha)*x[n] + alpha*y[n-1]",
     ]
-    (OUTPUT / "summary.txt").write_text("\n".join(lines), encoding="utf-8")
+    (OUTPUT / "сводка_результатов.txt").write_text("\n".join(lines), encoding="utf-8")
 
     print("Лабораторная работа 2 выполнена.")
     print(f"Результаты сохранены в: {OUTPUT}")

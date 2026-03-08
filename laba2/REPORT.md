@@ -32,9 +32,9 @@
 
 ## Артефакты
 Скрипт `python3 -m laba2.main` формирует в `laba2/output`:
-- `clean_signal.wav`
-- `distorted_signal.wav`
+- `чистый_сигнал.wav`
+- `искаженный_сигнал.wav`
 - выходы после всех трех фильтров
-- `filter_responses.png`
-- `signals_time_comparison.png`
-- `summary.txt` с коэффициентами и уравнениями.
+- `ачх_фильтров.png`
+- `сравнение_сигналов_во_времени.png`
+- `сводка_результатов.txt` с коэффициентами и уравнениями.
