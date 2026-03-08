@@ -23,10 +23,10 @@ def plot_time_domain(
     sample_rate: int,
     path: Path,
     title: str,
-    max_samples: int = 2000,
+    max_samples: int | None = None,
 ) -> None:
     _ensure_dir(path)
-    samples = min(max_samples, len(signal))
+    samples = len(signal) if max_samples is None else min(max_samples, len(signal))
     time_axis = np.arange(samples) / sample_rate
 
     plt.figure(figsize=(10, 3.5))
@@ -76,6 +76,35 @@ def plot_amplitude_phase_spectrum(
     plt.ylabel("arg(X(f)), рад")
     plt.grid(True, alpha=0.3)
 
+    plt.tight_layout()
+    plt.savefig(path, dpi=200)
+    plt.close()
+
+
+def plot_correlation_by_lag(
+    correlation: np.ndarray,
+    len_x: int,
+    len_y: int,
+    path: Path,
+    title: str,
+    max_points: int | None = None,
+) -> None:
+    _ensure_dir(path)
+    lags = np.arange(-(len_y - 1), len_x)
+
+    corr = correlation
+    lag_axis = lags
+    if max_points is not None and len(corr) > max_points:
+        step = int(np.ceil(len(corr) / max_points))
+        corr = corr[::step]
+        lag_axis = lags[::step]
+
+    plt.figure(figsize=(10, 3.5))
+    plt.plot(lag_axis, corr, linewidth=1.0)
+    plt.title(title)
+    plt.xlabel("Сдвиг (lag), отсчеты")
+    plt.ylabel("Амплитуда")
+    plt.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig(path, dpi=200)
     plt.close()

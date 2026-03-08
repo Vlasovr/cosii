@@ -17,6 +17,7 @@ from laba1.ops_numpy import (
 from laba1.plotting import (
     plot_amplitude_phase_spectrum,
     plot_benchmark,
+    plot_correlation_by_lag,
     plot_time_domain,
 )
 from laba1.signal_io import generate_periodic_signals, save_wav_mono_16
@@ -60,6 +61,8 @@ def run() -> None:
     x_pad = pad_to_power_of_two(signal_x)
     y_pad = pad_to_power_of_two(signal_y)
     conv_pad = pad_to_power_of_two(conv_manual)
+    linear_conv_length = len(signal_x) + len(signal_y) - 1
+    fft_conv_length = 1 << (linear_conv_length - 1).bit_length()
 
     x_manual_fft = fft_dif(x_pad)
     y_manual_fft = fft_dif(y_pad)
@@ -77,10 +80,34 @@ def run() -> None:
     y_numpy_ifft = ifft_numpy(y_numpy_fft)
     conv_numpy_ifft = ifft_numpy(conv_numpy_fft)
 
-    plot_time_domain(signal_x, SAMPLE_RATE, OUTPUT / "сигнал_x_временная_область.png", "Сигнал X во временной области")
-    plot_time_domain(signal_y, SAMPLE_RATE, OUTPUT / "сигнал_y_временная_область.png", "Сигнал Y во временной области")
-    plot_time_domain(conv_manual, SAMPLE_RATE, OUTPUT / "результат_свертки_временная_область.png", "Результат свертки во временной области")
-    plot_time_domain(corr_manual, SAMPLE_RATE, OUTPUT / "результат_корреляции_временная_область.png", "Результат корреляции во временной области")
+    plot_time_domain(
+        signal_x,
+        SAMPLE_RATE,
+        OUTPUT / "сигнал_x_временная_область.png",
+        "Сигнал X во временной области",
+        max_samples=None,
+    )
+    plot_time_domain(
+        signal_y,
+        SAMPLE_RATE,
+        OUTPUT / "сигнал_y_временная_область.png",
+        "Сигнал Y во временной области",
+        max_samples=None,
+    )
+    plot_time_domain(
+        conv_manual,
+        SAMPLE_RATE,
+        OUTPUT / "результат_свертки_временная_область.png",
+        "Результат свертки (полная длина N+M-1) во временной области",
+        max_samples=None,
+    )
+    plot_correlation_by_lag(
+        corr_manual,
+        len(signal_x),
+        len(signal_y),
+        OUTPUT / "результат_корреляции_сдвиг.png",
+        "Результат корреляции по оси сдвига (lag)",
+    )
 
     plot_amplitude_phase_spectrum(signal_x, SAMPLE_RATE, _manual_fft, OUTPUT / "сигнал_x_спектр.png", "Сигнал X")
     plot_amplitude_phase_spectrum(signal_y, SAMPLE_RATE, _manual_fft, OUTPUT / "сигнал_y_спектр.png", "Сигнал Y")
@@ -114,6 +141,17 @@ def run() -> None:
         "Сводка по лабораторной работе 1",
         f"Частота дискретизации: {SAMPLE_RATE} Гц",
         f"Длительность: {DURATION_SEC} с",
+        "",
+        "Длины сигналов и временные оси:",
+        f"N = {len(signal_x)}, M = {len(signal_y)}, N+M-1 = {linear_conv_length}",
+        f"Длительность X: {len(signal_x) / SAMPLE_RATE:.6f} с",
+        f"Длительность Y: {len(signal_y) / SAMPLE_RATE:.6f} с",
+        f"Длительность полной свертки: {len(conv_manual) / SAMPLE_RATE:.6f} с",
+        "",
+        "Zero-padding для свертки через БПФ:",
+        "Чтобы через БПФ получить линейную свертку (а не циклическую),",
+        "оба сигнала дополняются нулями до длины Lfft >= N+M-1.",
+        f"N+M-1 = {linear_conv_length}, выбранная длина БПФ Lfft = {fft_conv_length}",
         "",
         "Ошибки: ручная реализация vs NumPy",
         f"FFT(X): {_max_abs_error(x_manual_fft, x_numpy_fft):.6e}",
