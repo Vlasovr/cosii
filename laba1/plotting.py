@@ -15,6 +15,7 @@ FFTFunction = Callable[[np.ndarray], np.ndarray]
 
 
 def _ensure_dir(path: Path) -> None:
+    """Создает папку для графика, если она еще не существует."""
     path.parent.mkdir(parents=True, exist_ok=True)
 
 
@@ -25,6 +26,7 @@ def plot_time_domain(
     title: str,
     max_samples: int | None = None,
 ) -> None:
+    """Строит график сигнала во временной области."""
     _ensure_dir(path)
     samples = len(signal) if max_samples is None else min(max_samples, len(signal))
     time_axis = np.arange(samples) / sample_rate
@@ -47,6 +49,7 @@ def plot_amplitude_phase_spectrum(
     path: Path,
     title: str,
 ) -> None:
+    """Строит амплитудный и фазовый спектры сигнала."""
     _ensure_dir(path)
     spectrum = fft_fn(signal)
     n = len(spectrum)
@@ -89,6 +92,7 @@ def plot_correlation_by_lag(
     title: str,
     max_points: int | None = None,
 ) -> None:
+    """Строит график полной корреляции по оси сдвига."""
     _ensure_dir(path)
     lags = np.arange(-(len_y - 1), len_x)
 
@@ -118,6 +122,7 @@ def plot_benchmark(
     fft_corr: list[float],
     path: Path,
 ) -> None:
+    """Строит график сравнения времени прямых алгоритмов и алгоритмов через БПФ."""
     _ensure_dir(path)
     plt.figure(figsize=(10, 5))
 

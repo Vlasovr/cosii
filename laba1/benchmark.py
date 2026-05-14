@@ -10,6 +10,7 @@ MeasureFn = Callable[[Iterable[float], Iterable[float]], np.ndarray]
 
 
 def _measure_seconds(fn: MeasureFn, x: np.ndarray, y: np.ndarray, repeats: int = 3) -> float:
+    """Измеряет среднее время выполнения функции на нескольких повторах."""
     timings: list[float] = []
     for _ in range(repeats):
         start = time.perf_counter()
@@ -25,9 +26,11 @@ def benchmark_pair(
     fft_fn: MeasureFn,
     sizes: list[int],
 ) -> tuple[list[int], list[float], list[float]]:
+    """Сравнивает прямой алгоритм и алгоритм через БПФ для набора длин N."""
     direct_times: list[float] = []
     fft_times: list[float] = []
 
+    # Для каждого N берутся первые N отсчетов исходных сигналов.
     for n in sizes:
         x_n = x[:n]
         y_n = y[:n]
@@ -35,4 +38,3 @@ def benchmark_pair(
         fft_times.append(_measure_seconds(fft_fn, x_n, y_n))
 
     return sizes, direct_times, fft_times
-

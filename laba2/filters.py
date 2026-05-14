@@ -4,6 +4,7 @@ import numpy as np
 
 
 def moving_average_kernel(window_size: int) -> np.ndarray:
+    """Формирует ядро однородного фильтра скользящего среднего."""
     if window_size <= 0:
         raise ValueError("Размер окна должен быть положительным.")
     return np.ones(window_size, dtype=np.float64) / window_size
@@ -15,6 +16,7 @@ def design_rectangular_notch_fir(
     stop_high_hz: float,
     taps: int,
 ) -> np.ndarray:
+    """Проектирует режекторный КИХ-фильтр методом прямоугольного окна."""
     if taps % 2 == 0:
         raise ValueError("Число коэффициентов taps должно быть нечетным для симметричного КИХ.")
     if not (0 < stop_low_hz < stop_high_hz < sample_rate / 2):
@@ -28,8 +30,10 @@ def design_rectangular_notch_fir(
     for n in range(taps):
         k = n - m
         if k == 0:
+            # Центральный коэффициент получается из предела идеальной характеристики.
             h[n] = 1.0 - (omega2 - omega1) / np.pi
         else:
+            # Идеальная характеристика полосо-заграждающего фильтра.
             h[n] = -(
                 (np.sin(omega2 * k) - np.sin(omega1 * k))
                 / (np.pi * k)
@@ -41,21 +45,25 @@ def design_rectangular_notch_fir(
 
 
 def apply_fir(signal: np.ndarray, kernel: np.ndarray) -> np.ndarray:
+    """Применяет КИХ-фильтр к сигналу через свертку."""
     return np.convolve(signal, kernel, mode="same")
 
 
 def one_pole_lpf_alpha(sample_rate: int, cutoff_hz: float) -> float:
+    """Вычисляет коэффициент alpha для однополюсного НЧ-фильтра."""
     if cutoff_hz <= 0:
         raise ValueError("Частота среза должна быть положительной.")
     return float(np.exp(-2.0 * np.pi * cutoff_hz / sample_rate))
 
 
 def apply_one_pole_lpf(signal: np.ndarray, alpha: float) -> np.ndarray:
+    """Применяет рекурсивный однополюсный НЧ-фильтр."""
     y = np.zeros_like(signal, dtype=np.float64)
     if len(signal) == 0:
         return y
 
     y[0] = (1.0 - alpha) * signal[0]
+    # Текущий выход зависит от текущего входа и предыдущего выходного отсчета.
     for n in range(1, len(signal)):
         y[n] = (1.0 - alpha) * signal[n] + alpha * y[n - 1]
 
@@ -63,12 +71,14 @@ def apply_one_pole_lpf(signal: np.ndarray, alpha: float) -> np.ndarray:
 
 
 def fir_frequency_response(kernel: np.ndarray, sample_rate: int, n_fft: int = 4096) -> tuple[np.ndarray, np.ndarray]:
+    """Вычисляет АЧХ КИХ-фильтра по БПФ его импульсной характеристики."""
     h = np.fft.rfft(kernel, n=n_fft)
     freqs = np.fft.rfftfreq(n_fft, d=1.0 / sample_rate)
     return freqs, np.abs(h)
 
 
 def one_pole_lpf_frequency_response(alpha: float, sample_rate: int, n_fft: int = 4096) -> tuple[np.ndarray, np.ndarray]:
+    """Вычисляет АЧХ однополюсного НЧ-фильтра по аналитической передаточной функции."""
     w = np.linspace(0.0, np.pi, n_fft // 2 + 1)
     h = (1.0 - alpha) / (1.0 - alpha * np.exp(-1j * w))
     freqs = (w / (2.0 * np.pi)) * sample_rate

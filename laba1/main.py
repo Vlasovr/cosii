@@ -31,22 +31,26 @@ DURATION_SEC = 2.0
 
 
 def _max_abs_error(a: np.ndarray, b: np.ndarray) -> float:
+    """Возвращает максимальную абсолютную погрешность между двумя массивами."""
     n = min(len(a), len(b))
     return float(np.max(np.abs(a[:n] - b[:n])))
 
 
 def _manual_fft(signal: np.ndarray) -> np.ndarray:
+    """Обертка для построения спектров ручной реализацией БПФ DIF."""
     return fft_dif(pad_to_power_of_two(signal))
 
 
 def run() -> None:
     OUTPUT.mkdir(parents=True, exist_ok=True)
 
+    # 1. Генерация двух периодических сигналов и сохранение их в WAV-файлы.
     signal_x, signal_y = generate_periodic_signals(SAMPLE_RATE, DURATION_SEC)
 
     save_wav_mono_16(OUTPUT / "периодический_сигнал_1.wav", SAMPLE_RATE, signal_x)
     save_wav_mono_16(OUTPUT / "периодический_сигнал_2.wav", SAMPLE_RATE, signal_y)
 
+    # 2. Ручные и библиотечные операции свертки и корреляции.
     conv_manual = convolution_full(signal_x, signal_y)
     corr_manual = correlation_full(signal_x, signal_y)
     conv_numpy = convolution_full_numpy(signal_x, signal_y)
@@ -55,9 +59,11 @@ def run() -> None:
     save_wav_mono_16(OUTPUT / "сигнал_после_свертки.wav", SAMPLE_RATE, conv_manual)
     save_wav_mono_16(OUTPUT / "сигнал_после_корреляции.wav", SAMPLE_RATE, corr_manual)
 
+    # 3. Проверка теоремы Фурье для свертки и корреляции.
     conv_from_fft = convolution_via_fft_dif(signal_x, signal_y)
     corr_from_fft = correlation_via_fft_dif(signal_x, signal_y)
 
+    # 4. Подготовка сигналов к БПФ: длины должны быть степенями двойки.
     x_pad = pad_to_power_of_two(signal_x)
     y_pad = pad_to_power_of_two(signal_y)
     conv_pad = pad_to_power_of_two(conv_manual)
@@ -68,10 +74,12 @@ def run() -> None:
     y_manual_fft = fft_dif(y_pad)
     conv_manual_fft = fft_dif(conv_pad)
 
+    # 5. Обратное БПФ проверяет восстановление сигналов из спектра.
     x_manual_ifft = ifft_dif(x_manual_fft)
     y_manual_ifft = ifft_dif(y_manual_fft)
     conv_manual_ifft = ifft_dif(conv_manual_fft)
 
+    # 6. Библиотечные FFT/IFFT нужны для численного сравнения.
     x_numpy_fft = fft_numpy(x_pad)
     y_numpy_fft = fft_numpy(y_pad)
     conv_numpy_fft = fft_numpy(conv_pad)
@@ -80,6 +88,7 @@ def run() -> None:
     y_numpy_ifft = ifft_numpy(y_numpy_fft)
     conv_numpy_ifft = ifft_numpy(conv_numpy_fft)
 
+    # 7. Построение графиков во временной и частотной областях.
     plot_time_domain(
         signal_x,
         SAMPLE_RATE,
@@ -113,6 +122,7 @@ def run() -> None:
     plot_amplitude_phase_spectrum(signal_y, SAMPLE_RATE, _manual_fft, OUTPUT / "сигнал_y_спектр.png", "Сигнал Y")
     plot_amplitude_phase_spectrum(conv_manual, SAMPLE_RATE, _manual_fft, OUTPUT / "результат_свертки_спектр.png", "Результат свертки")
 
+    # 8. Бенчмарк показывает зависимость времени работы от количества отсчетов N.
     sizes = [256, 512, 1024, 2048]
     sizes, direct_conv, fft_conv = benchmark_pair(
         signal_x,
@@ -137,6 +147,7 @@ def run() -> None:
         OUTPUT / "сравнение_эффективности_алгоритмов.png",
     )
 
+    # 9. Текстовая сводка фиксирует параметры эксперимента, ошибки и время выполнения.
     report_lines = [
         "Сводка по лабораторной работе 1",
         f"Частота дискретизации: {SAMPLE_RATE} Гц",

@@ -7,12 +7,14 @@ import numpy as np
 
 
 def next_power_of_two(n: int) -> int:
+    """Возвращает ближайшую степень двойки, не меньшую n."""
     if n <= 1:
         return 1
     return 1 << (n - 1).bit_length()
 
 
 def pad_to_power_of_two(values: Iterable[complex | float]) -> np.ndarray:
+    """Дополняет последовательность нулями до длины 2^k."""
     arr = np.asarray(list(values), dtype=np.complex128)
     target = next_power_of_two(len(arr))
     if len(arr) == target:
@@ -23,6 +25,7 @@ def pad_to_power_of_two(values: Iterable[complex | float]) -> np.ndarray:
 
 
 def bit_reverse_index(index: int, bits: int) -> int:
+    """Вычисляет индекс с обратным порядком битов."""
     result = 0
     for _ in range(bits):
         result = (result << 1) | (index & 1)
@@ -31,6 +34,7 @@ def bit_reverse_index(index: int, bits: int) -> int:
 
 
 def bit_reverse_permutation(values: np.ndarray) -> np.ndarray:
+    """Переставляет элементы массива из бит-реверсивного порядка в естественный."""
     n = len(values)
     bits = int(math.log2(n))
     out = np.zeros(n, dtype=np.complex128)
@@ -40,6 +44,7 @@ def bit_reverse_permutation(values: np.ndarray) -> np.ndarray:
 
 
 def _fft_dif_recursive(values: np.ndarray, direction: int) -> np.ndarray:
+    """Рекурсивная часть БПФ DIF: сначала бабочки, затем деление на половины."""
     n = len(values)
     if n == 1:
         return values
@@ -49,6 +54,7 @@ def _fft_dif_recursive(values: np.ndarray, direction: int) -> np.ndarray:
     omega_n = complex(math.cos(angle), math.sin(angle))
     omega = 1.0 + 0.0j
 
+    # Бабочка DIF объединяет симметричные отсчеты верхней и нижней половин.
     for k in range(half):
         top = values[k]
         bottom = values[k + half]
@@ -62,15 +68,16 @@ def _fft_dif_recursive(values: np.ndarray, direction: int) -> np.ndarray:
 
 
 def fft_dif(signal: Iterable[complex | float]) -> np.ndarray:
+    """Выполняет прямое БПФ с прореживанием по частоте."""
     prepared = pad_to_power_of_two(signal)
     raw = _fft_dif_recursive(prepared.copy(), direction=1)
     return bit_reverse_permutation(raw)
 
 
 def ifft_dif(spectrum: Iterable[complex | float]) -> np.ndarray:
+    """Выполняет обратное БПФ через сопряжение прямого преобразования."""
     spectrum_np = np.asarray(list(spectrum), dtype=np.complex128)
     n = len(spectrum_np)
     conj = np.conj(spectrum_np)
     raw = fft_dif(conj)
     return np.conj(raw) / n
-

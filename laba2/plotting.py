@@ -11,6 +11,7 @@ import numpy as np
 
 
 def _ensure_dir(path: Path) -> None:
+    """Создает каталог для выходного графика при необходимости."""
     path.parent.mkdir(parents=True, exist_ok=True)
 
 
@@ -24,8 +25,10 @@ def plot_time_comparison(
     path: Path,
     max_samples: int = 2500,
 ) -> None:
+    """Строит временные графики входа, искаженного сигнала и выходов фильтров."""
     _ensure_dir(path)
 
+    # Для наглядности выводится начальный фрагмент, а не все 2 секунды сигнала.
     samples = min(max_samples, len(clean))
     t = np.arange(samples) / sample_rate
 
@@ -68,6 +71,7 @@ def plot_filter_responses(
     iir_fr: tuple[np.ndarray, np.ndarray],
     path: Path,
 ) -> None:
+    """Строит амплитудно-частотные характеристики трех фильтров."""
     _ensure_dir(path)
     h_f, h_a = homogeneous_fr
     f_f, f_a = fir_fr

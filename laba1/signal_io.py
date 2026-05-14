@@ -10,6 +10,7 @@ INT16_SCALE = 32767
 
 
 def normalize(signal: np.ndarray) -> np.ndarray:
+    """Нормирует сигнал так, чтобы максимальная амплитуда не превышала 1."""
     peak = np.max(np.abs(signal))
     if peak == 0:
         return signal.astype(np.float64)
@@ -17,6 +18,7 @@ def normalize(signal: np.ndarray) -> np.ndarray:
 
 
 def save_wav_mono_16(path: Path, sample_rate: int, signal: np.ndarray) -> None:
+    """Сохраняет одномерный сигнал в монофонический 16-битный WAV-файл."""
     path.parent.mkdir(parents=True, exist_ok=True)
     normalized = normalize(signal)
     int_data = np.clip(normalized * INT16_SCALE, -INT16_SCALE, INT16_SCALE).astype(np.int16)
@@ -29,6 +31,7 @@ def save_wav_mono_16(path: Path, sample_rate: int, signal: np.ndarray) -> None:
 
 
 def read_wav_mono_16(path: Path) -> tuple[int, np.ndarray]:
+    """Считывает 16-битный WAV-файл и возвращает частоту дискретизации и массив отсчетов."""
     with wave.open(str(path), "rb") as wav_file:
         channels = wav_file.getnchannels()
         sample_rate = wav_file.getframerate()
@@ -48,8 +51,10 @@ def read_wav_mono_16(path: Path) -> tuple[int, np.ndarray]:
 
 
 def generate_periodic_signals(sample_rate: int, duration_sec: float) -> tuple[np.ndarray, np.ndarray]:
+    """Генерирует два периодических тестовых сигнала для лабораторной работы."""
     t = np.arange(0.0, duration_sec, 1.0 / sample_rate)
 
+    # Каждый сигнал составлен из нескольких гармоник с разными фазами и амплитудами.
     signal_x = (
         0.70 * np.sin(2 * np.pi * 220 * t)
         + 0.40 * np.sin(2 * np.pi * 440 * t + 0.3)

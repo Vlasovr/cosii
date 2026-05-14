@@ -34,16 +34,20 @@ ONE_POLE_CUTOFF_HZ = 450.0
 
 
 def run() -> None:
+    """Запускает полный эксперимент лабораторной работы 2."""
     OUTPUT.mkdir(parents=True, exist_ok=True)
 
+    # 1. В качестве входа используется первый периодический сигнал из ЛР1.
     clean, _ = generate_periodic_signals(SAMPLE_RATE, DURATION_SEC)
 
+    # 2. В сигнал вносится контролируемая помеха: тон 700 Гц и слабый белый шум.
     rng = np.random.default_rng(42)
     t = np.arange(len(clean)) / SAMPLE_RATE
     interference = 0.35 * np.sin(2 * np.pi * 700.0 * t)
     random_noise = 0.03 * rng.normal(size=len(clean))
     distorted = clean + interference + random_noise
 
+    # 3. Расчет коэффициентов трех фильтров согласно варианту.
     h_homogeneous = moving_average_kernel(HOMOGENEOUS_WINDOW)
     h_notch = design_rectangular_notch_fir(
         sample_rate=SAMPLE_RATE,
@@ -53,20 +57,24 @@ def run() -> None:
     )
     alpha = one_pole_lpf_alpha(SAMPLE_RATE, ONE_POLE_CUTOFF_HZ)
 
+    # 4. Пропуск искаженного сигнала через однородный, КИХ и БИХ фильтры.
     y_homogeneous = apply_fir(distorted, h_homogeneous)
     y_fir = apply_fir(distorted, h_notch)
     y_iir = apply_one_pole_lpf(distorted, alpha)
 
+    # 5. Сохранение исходного, искаженного и отфильтрованных сигналов.
     save_wav_mono_16(OUTPUT / "чистый_сигнал.wav", SAMPLE_RATE, clean)
     save_wav_mono_16(OUTPUT / "искаженный_сигнал.wav", SAMPLE_RATE, distorted)
     save_wav_mono_16(OUTPUT / "выход_однородный_фильтр.wav", SAMPLE_RATE, y_homogeneous)
     save_wav_mono_16(OUTPUT / "выход_ких_прямоугольное_окно.wav", SAMPLE_RATE, y_fir)
     save_wav_mono_16(OUTPUT / "выход_бих_однополюсный_нч.wav", SAMPLE_RATE, y_iir)
 
+    # 6. Расчет АЧХ нужен для визуальной проверки свойств фильтров.
     homogeneous_fr = fir_frequency_response(h_homogeneous, SAMPLE_RATE)
     fir_fr = fir_frequency_response(h_notch, SAMPLE_RATE)
     iir_fr = one_pole_lpf_frequency_response(alpha, SAMPLE_RATE)
 
+    # 7. Построение графиков АЧХ и временных диаграмм.
     plot_filter_responses(
         homogeneous_fr=homogeneous_fr,
         fir_fr=fir_fr,
@@ -83,6 +91,7 @@ def run() -> None:
         path=OUTPUT / "сравнение_сигналов_во_времени.png",
     )
 
+    # 8. Сводка фиксирует параметры и рассчитанные коэффициенты для отчета.
     lines = [
         "Сводка по лабораторной работе 2",
         f"Частота дискретизации: {SAMPLE_RATE} Гц",

@@ -8,15 +8,18 @@ from laba1.fft_dif import fft_dif, ifft_dif, next_power_of_two
 
 
 def _pad_to_length(signal: np.ndarray, length: int) -> np.ndarray:
+    """Дополняет сигнал нулями до заданной длины БПФ."""
     out = np.zeros(length, dtype=np.float64)
     out[: len(signal)] = signal
     return out
 
 
 def convolution_via_fft_dif(x: Iterable[float], y: Iterable[float]) -> np.ndarray:
+    """Вычисляет линейную свертку через теорему Фурье и ручной БПФ DIF."""
     x_np = np.asarray(list(x), dtype=np.float64)
     y_np = np.asarray(list(y), dtype=np.float64)
 
+    # Для линейной свертки длина БПФ должна быть не меньше N + M - 1.
     linear_size = len(x_np) + len(y_np) - 1
     fft_size = next_power_of_two(linear_size)
 
@@ -26,11 +29,12 @@ def convolution_via_fft_dif(x: Iterable[float], y: Iterable[float]) -> np.ndarra
     X = fft_dif(x_pad)
     Y = fft_dif(y_pad)
 
+    # По теореме свертки произведение спектров соответствует свертке во времени.
     result = ifft_dif(X * Y)
     return np.real(result[:linear_size])
 
 
 def correlation_via_fft_dif(x: Iterable[float], y: Iterable[float]) -> np.ndarray:
+    """Вычисляет корреляцию через свертку с развернутым вторым сигналом."""
     y_reversed = np.asarray(list(y), dtype=np.float64)[::-1]
     return convolution_via_fft_dif(x, y_reversed)
-
