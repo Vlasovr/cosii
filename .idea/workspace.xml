@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8c2f6983-53dd-4a5f-8c25-00140fb12a9e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/laba1/.idea/laba1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/laba1/.idea/laba1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba1/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/laba1/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba1/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/laba1/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba1/output/результат_корреляции_сдвиг.png" beforeDir="false" afterPath="$PROJECT_DIR$/laba1/output/результат_корреляции_сдвиг.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba1/output/результат_свертки_временная_область.png" beforeDir="false" afterPath="$PROJECT_DIR$/laba1/output/результат_свертки_временная_область.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba1/output/результат_свертки_спектр.png" beforeDir="false" afterPath="$PROJECT_DIR$/laba1/output/результат_свертки_спектр.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba1/output/сводка_результатов.txt" beforeDir="false" afterPath="$PROJECT_DIR$/laba1/output/сводка_результатов.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba1/output/сигнал_x_временная_область.png" beforeDir="false" afterPath="$PROJECT_DIR$/laba1/output/сигнал_x_временная_область.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba1/output/сигнал_x_спектр.png" beforeDir="false" afterPath="$PROJECT_DIR$/laba1/output/сигнал_x_спектр.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba1/output/сигнал_y_временная_область.png" beforeDir="false" afterPath="$PROJECT_DIR$/laba1/output/сигнал_y_временная_область.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba1/output/сигнал_y_спектр.png" beforeDir="false" afterPath="$PROJECT_DIR$/laba1/output/сигнал_y_спектр.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba1/output/сравнение_эффективности_алгоритмов.png" beforeDir="false" afterPath="$PROJECT_DIR$/laba1/output/сравнение_эффективности_алгоритмов.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba1/Отчет_по_лабораторной_работе_1_Власов_РЕ.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba2/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/laba2/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba2/output/ачх_фильтров.png" beforeDir="false" afterPath="$PROJECT_DIR$/laba2/output/ачх_фильтров.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba2/output/сводка_результатов.txt" beforeDir="false" afterPath="$PROJECT_DIR$/laba2/output/сводка_результатов.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/laba2/output/сравнение_сигналов_во_времени.png" beforeDir="false" afterPath="$PROJECT_DIR$/laba2/output/сравнение_сигналов_во_времени.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Отчет_по_лабораторной_работе_1_Власов_РЕ.docx" beforeDir="false" afterPath="$PROJECT_DIR$/Отчет_по_лабораторной_работе_1_Власов_РЕ.docx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="3EFl0n8aGgQBYZQopQ1r2N123VJ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.ЛР1.executor": "Run",
+    "Python.ЛР2.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/Roman/Documents/Git/university/Универ/4/ЦОСиИ/cosii",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
+  }
+}]]></component>
+  <component name="RunManager" selected="Python.ЛР1" />
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-4e2b1448bda8-9a97661f3031-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.27397.106" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8c2f6983-53dd-4a5f-8c25-00140fb12a9e" name="Changes" comment="" />
+      <created>1779781977121</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1779781977121</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/laba2/main.py</url>
+          <line>68</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
